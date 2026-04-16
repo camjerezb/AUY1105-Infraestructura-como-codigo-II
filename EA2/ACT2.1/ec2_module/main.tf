@@ -53,14 +53,6 @@ resource "aws_security_group" "additional_sg" {
   description = "Security group for additional instance"
   vpc_id      = var.vpc_id
 
-  ingress {
-    description = "SSH access"
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = [var.additional_instances[count.index].allow_ssh_from]
-  }
-
   egress {
     description = "Permitir trafico de salida a cualquier lugar"
     from_port   = 0
@@ -72,6 +64,20 @@ resource "aws_security_group" "additional_sg" {
   tags = {
     Name = var.additional_instances[count.index].security_group_name
   }
+}
+
+resource "aws_security_group_rule" "additional_ingress" {
+  count = length(var.additional_instances)
+
+  type              = "ingress"
+  from_port         = 22
+  to_port           = 22
+  protocol          = "tcp"
+  security_group_id = aws_security_group.additional_sg[count.index].id
+
+  # For the first additional instance (public), allow from user IP
+  # For the second (private), allow from the private IP of the first additional instance
+  cidr_blocks = count.index == 0 ? [var.additional_instances[count.index].allow_ssh_from] : ["${aws_instance.additional_ec2[0].private_ip}/32"]
 }
 
 resource "aws_instance" "additional_ec2" {

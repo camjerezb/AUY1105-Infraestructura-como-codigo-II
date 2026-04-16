@@ -37,7 +37,7 @@ module "ec2" {
       instance_type       = "t3.micro"
       subnet_id           = module.vpc.subnet_privada_1_id
       security_group_name = "ssh-from-public-instance"
-      allow_ssh_from      = "${module.ec2.additional_private_ips[0]}/32"
+      allow_ssh_from      = "dummy"  # Not used for private instance
     }
   ]
 }

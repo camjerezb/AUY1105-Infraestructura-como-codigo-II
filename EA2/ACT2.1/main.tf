@@ -18,4 +18,28 @@ module "ec2" {
   subnet_id     = module.vpc.subnet_publica_1_id
   vpc_id        = module.vpc.vpc_id
   instance_name = "MiInstancia"
+  new_key_name  = "terraform_key"
+  new_public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAklOUpkDHrfHY17SbrmTIpNLTGK9Tjom/BWDSUGPl+nafzlHDTYW7hdI4yZ5ew18JH4JW9jbhUFrviQzM7xlELEVf4h9lFX5QVkbPppSwg0cda3Pbv7kOdJnrm0lQ== user@example.com"
+  additional_instances = [
+    {
+      instance_name       = "InstanciaPublicaAdicional"
+      instance_type       = "t3.micro"
+      subnet_id           = module.vpc.subnet_publica_2_id
+      security_group_name = "ssh-from-my-ip"
+      allow_ssh_from      = "152.230.70.226/32"
+    },
+    {
+      instance_name       = "InstanciaPrivada"
+      instance_type       = "t3.micro"
+      subnet_id           = module.vpc.subnet_privada_1_id
+      security_group_name = "ssh-from-public-instance"
+      allow_ssh_from      = "10.1.1.0/24"
+    }
+  ]
+}
+
+module "s3" {
+  source        = "./s3_module"
+  bucket_prefix = "mi-bucket-personalizado"
+  bucket_suffix = "2026"
 }

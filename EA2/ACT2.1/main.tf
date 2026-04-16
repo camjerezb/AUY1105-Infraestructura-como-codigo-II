@@ -23,7 +23,7 @@ module "ec2" {
   vpc_id        = module.vpc.vpc_id
   instance_name = "MiInstancia"
   new_key_name  = "terraform_key"
-  new_public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAklOUpkDHrfHY17SbrmTIpNLTGK9Tjom/BWDSUGPl+nafzlHDTYW7hdI4yZ5ew18JH4JW9jbhUFrviQzM7xlELEVf4h9lFX5QVkbPppSwg0cda3Pbv7kOdJnrm0lQ== user@example.com"
+  new_public_key = ""
   additional_instances = [
     {
       instance_name       = "InstanciaPublicaAdicional"

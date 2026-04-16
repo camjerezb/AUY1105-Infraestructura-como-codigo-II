@@ -61,6 +61,7 @@ variable "new_key_name" {
 }
 
 variable "new_public_key" {
-  description = "Nueva clave pública SSH para instancias adicionales"
+  description = "Nueva clave pública SSH para instancias adicionales (opcional)"
   type        = string
+  default     = ""
 }

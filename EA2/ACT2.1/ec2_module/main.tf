@@ -4,6 +4,7 @@ resource "aws_key_pair" "mi_key" {
 }
 
 resource "aws_key_pair" "new_key" {
+  count      = var.new_public_key != "" ? 1 : 0
   key_name   = var.new_key_name
   public_key = var.new_public_key
 }
@@ -84,7 +85,7 @@ resource "aws_instance" "additional_ec2" {
   count         = length(var.additional_instances)
   ami           = var.ami
   instance_type = var.additional_instances[count.index].instance_type
-  key_name      = aws_key_pair.new_key.key_name
+  key_name      = var.new_public_key != "" ? aws_key_pair.new_key[0].key_name : aws_key_pair.mi_key.key_name
   subnet_id     = var.additional_instances[count.index].subnet_id
   vpc_security_group_ids = [aws_security_group.additional_sg[count.index].id]
 

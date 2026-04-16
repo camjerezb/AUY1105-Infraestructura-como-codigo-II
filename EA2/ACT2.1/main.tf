@@ -1,3 +1,7 @@
+provider "aws" {
+  region = "us-east-1"
+}
+
 module "vpc" {
   source                = "./vpc_module"
   vpc_cidr              = "10.1.0.0/16"
@@ -33,7 +37,7 @@ module "ec2" {
       instance_type       = "t3.micro"
       subnet_id           = module.vpc.subnet_privada_1_id
       security_group_name = "ssh-from-public-instance"
-      allow_ssh_from      = "10.1.1.0/24"
+      allow_ssh_from      = "${module.ec2.additional_private_ips[0]}/32"
     }
   ]
 }

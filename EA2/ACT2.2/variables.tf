@@ -25,7 +25,7 @@ variable "vpc_cidr" {
 variable "security_group_name" {
   description = "Nombre del grupo de seguridad para la instancia EC2"
   type        = string
-  default     = "sg-mi-instancia"
+  default     = "mi-instancia-ssh"
 }
 
 variable "ec2_instance_type" {
